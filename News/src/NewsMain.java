@@ -2,6 +2,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
@@ -66,18 +69,30 @@ public class NewsMain {
 		}
 		JSONArray articles = (JSONArray) json.get("articles");
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		
 		MySQLAccess dao = new MySQLAccess();
 		dao.connect();
 		for(int i = 0; i < articles.size();i++) {
 			JSONObject article = (JSONObject) articles.get(i);
-			dao.addNouvelle(
-					new Nouvelle(
-							String.valueOf(article.get("title")),
-							String.valueOf(article.get("descritption")),
-							String.valueOf(article.get("url")),
-							(long) article.get("publishedAt")));
+			try {
+				dao.addNouvelle(
+						new Nouvelle(
+								String.valueOf(article.get("title")),
+								String.valueOf(article.get("descritption")),
+								String.valueOf(article.get("url")),
+								dateToUnixTimestamp(sdf, String.valueOf(article.get("publishedAt")))));
+			} catch (java.text.ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
+		dao.disconnect();
+	}
+	
+	private static long dateToUnixTimestamp(SimpleDateFormat sdf, String date) throws java.text.ParseException {
+		return sdf.parse(date).getTime()/1000;
 	}
 
 	private static void writeRedis() {

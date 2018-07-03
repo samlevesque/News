@@ -61,7 +61,7 @@ public class MySQLAccess {
         }
     }
 
-    private void disconnect() {
+    public void disconnect() {
         try {
             if (resultSet != null) {
                 resultSet.close();
