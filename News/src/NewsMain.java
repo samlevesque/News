@@ -38,6 +38,9 @@ public class NewsMain {
 				else if(args.length == 5 && args[1].equals("-u") && args[3].equals("-p")) {
 					write(args[2], args[4]);
 				}
+				else {
+					throw new IllegalArgumentException();
+				}
 			}
 			else if(args[0].equals("-r")) {
 				if(args.length == 2 && args[1].equals("-redis")) {
@@ -45,6 +48,9 @@ public class NewsMain {
 				}
 				else if(args.length == 5 && args[1].equals("-u") && args[3].equals("-p")) {
 					read(args[2], args[4]);
+				}
+				else {
+					throw new IllegalArgumentException();
 				}
 			}
 			else {
