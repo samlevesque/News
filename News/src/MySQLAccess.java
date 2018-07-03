@@ -11,21 +11,29 @@ public class MySQLAccess {
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
     
-    private String DRIVER = "com.mysql.jdbc.Driver";
+    private String DRIVER = "com.mysqljdbc.Driver";
     private String CONNECT = "jdbc:mysql://localhost/feedback?";
-    private String TIMEZONE_CORRECTIONS = "com.mysql.jdbc.Driver";
-    private String OTHER_CORRECTIONS = "com.mysql.jdbc.Driver";
+    private String TIMEZONE_CORRECTIONS = "useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&";
+    private String OTHER_CORRECTIONS = "useSSL=false&";
     private String USER = "com.mysql.jdbc.Driver";
     private String PASSWORD = "com.mysql.jdbc.Driver";
     
     public void connect() {
     	try {
-    		Class.forName(DRIVER);
-    		connect = DriverManager
-                .getConnection(CONNECT + "user=" + USER + "&password=" + PASSWORD);
-    	} catch(Exception e) {
-    		
-    	}
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        // Setup the connection with the DB
+        try {
+			connect = DriverManager
+			        .getConnection("jdbc:mysql://localhost/news?" + TIMEZONE_CORRECTIONS + OTHER_CORRECTIONS 
+			                + "user=sqluser&password=sqluserpw");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public void addNouvelle(Nouvelle nouvelle) {
