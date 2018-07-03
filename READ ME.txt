@@ -1,0 +1,18 @@
+Voici donc l'exercice.
+
+Je n'ai pas poussé l'exception handling car je n'étais pas certain des practices que vous employez.
+Je n'ai pas commenter, je crois qu'il serait plus simple de discuter de l'exercice en général s'il y a des précisions ou explications à donner.
+
+L'observateur attentif pourrait remarquer que dans les plus anciens commit, le user et le mot de passe du MySQL se trouvent dans le code. 
+C'était une question de simplicité, dans le commit final j'ai implémenter un système ou l'on doit entrer ces informations à la main, et bien sur l'user et le mot de passe on été remplacés.
+
+L'observateur encore plus attentif pourrait remarquer que tous les commits on eut lieux dans la nuit de lundi, ce qui pourrait laisser croire que j'ai tout fait à la dernière minute.
+Malheureusement, l'explication est peut-être encore plus triste : je n'avais jamais travailler avec Eclipse et Github (seulement avec VS et Android Studio). 
+Je n'ai pas setup le github dès le début, je travaillais sur ma machine, et vers la fin, au moment de migrer vers Github, en suivant un tutoriel pas très clair, une erreur est sruvenue et j'ai perdu tout le code.
+J'ai donc dû tout recoder, mais c'était assez frais dans ma mémoire. Disons que c'est une leçon apprise (et un souvenir amer d'Eclipse).
+
+Comme j'ai écrit ci-dessus, s'il y a des questions je me ferait un plaisir d'en discuter.
+
+Merci encore,
+
+Samuel Lévesque
