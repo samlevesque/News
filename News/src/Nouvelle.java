@@ -33,7 +33,11 @@ public class Nouvelle {
 		return publishedAt;
 	}
 	
-	public Nouvelle(JSONObject nouvelle) {
+	public Nouvelle(String title, String description, String url, long publishedAt) {
+		this.title = title;
+		this.description = description;
+		this.url = url;
+		this.publishedAt = publishedAt;
 		
 	}
 

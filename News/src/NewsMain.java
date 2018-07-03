@@ -1,3 +1,13 @@
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+
+import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class NewsMain {
 	
@@ -35,7 +45,38 @@ public class NewsMain {
 	
 	private static void write() {
 		
+		URL url = null;
+		try {
+			url = new URL("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=57f4696d8c28484f849bc09108670849");
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
+		JSONParser parser = new JSONParser();
+		JSONObject json = new JSONObject();
+		try {
+			json = (JSONObject) parser.parse(IOUtils.toString(url, Charset.forName("UTF-8")));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONArray articles = (JSONArray) json.get("articles");
+		
+		MySQLAccess dao = new MySQLAccess();
+		dao.connect();
+		for(int i = 0; i < articles.size();i++) {
+			JSONObject article = (JSONObject) articles.get(i);
+			dao.addNouvelle(
+					new Nouvelle(
+							String.valueOf(article.get("title")),
+							String.valueOf(article.get("descritption")),
+							String.valueOf(article.get("url")),
+							(long) article.get("publishedAt")));
+		}
 		
 	}
 
