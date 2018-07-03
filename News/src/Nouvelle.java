@@ -40,5 +40,12 @@ public class Nouvelle {
 		this.publishedAt = publishedAt;
 		
 	}
+	
+	public String toString() {
+		return "title : " + this.getTitle() + "\n" 
+			+ "description : " + this.getDescription() + "\n" 
+			+ "url : " + this.getUrl() + "\n" 
+			+ "publishedAt : " + String.valueOf(this.getPublishedAt()) + "\n";
+	}
 
 }

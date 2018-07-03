@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class MySQLAccess {
     private Connection connect = null;
@@ -22,16 +23,15 @@ public class MySQLAccess {
     	try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Erreur Driver");
 			e.printStackTrace();
 		}
-        // Setup the connection with the DB
         try {
 			connect = DriverManager
 			        .getConnection("jdbc:mysql://localhost/news?" + TIMEZONE_CORRECTIONS + OTHER_CORRECTIONS 
 			                + "user=sqluser&password=sqluserpw");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Erreur connection");
 			e.printStackTrace();
 		}
     }
@@ -46,27 +46,8 @@ public class MySQLAccess {
 	        preparedStatement.setLong(4, nouvelle.getPublishedAt());
 	        preparedStatement.executeUpdate();
     	} catch (SQLException e) {
-    		
+    		System.out.println("Erreur insertion");
     	}
-    }
-
-
-    private void writeResultSet(ResultSet resultSet) throws SQLException {
-        // ResultSet is initially before the first data set
-        while (resultSet.next()) {
-            // It is possible to get the columns via name
-            // also possible to get the columns via the column number
-            // which starts at 1
-            // e.g. resultSet.getSTring(2);
-            String user = resultSet.getString("myuser");
-            String website = resultSet.getString("webpage");
-            String summary = resultSet.getString("summary");
-            String comment = resultSet.getString("comments");
-            System.out.println("User: " + user);
-            System.out.println("Website: " + website);
-            System.out.println("summary: " + summary);
-            System.out.println("Comment: " + comment);
-        }
     }
 
     public void disconnect() {
@@ -83,8 +64,31 @@ public class MySQLAccess {
                 connect.close();
             }
         } catch (Exception e) {
-
+        	System.out.println("Erreur deconnection");
         }
     }
+
+	public ArrayList<Nouvelle> getNouvelles() {
+		ArrayList<Nouvelle> nouvelles = new ArrayList<Nouvelle>();
+		try {
+			preparedStatement = connect
+			        .prepareStatement("SELECT * FROM news.news ORDER BY publishedAt DESC");
+
+	        resultSet = preparedStatement.executeQuery();
+	        while (resultSet.next()) {
+	        	nouvelles.add(new Nouvelle(
+	        			resultSet.getString("title"),
+	        			resultSet.getString("description"),
+	        			resultSet.getString("url"),
+	        			resultSet.getLong("publishedAt")));
+	        }
+	        
+		} catch (SQLException e) {
+			System.out.println("Erreur selection des nouvelles");
+			e.printStackTrace();
+		} finally {
+			return nouvelles;
+		}
+	}
 
 }
