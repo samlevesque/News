@@ -26,7 +26,8 @@ public class NewsMain {
 	static String argError = "Veuillez entrer en argument :" + "\n"
 			+ "'-w' pour ajouter les nouvelles à la base de donnée;" + "\n"
 			+ "'-r' pour afficher les nouvelles de la base de donnée;" + "\n"
-			+ "et ajouter '-redis' pour faire appel à Redis.";
+			+ "et ajouter '-redis' pour faire appel à Redis." + "\n"
+			+ "Si vous choisissez MySQL, veuillez ajouter '-u' suivi du user et -p suivi du mot de passe.";
 
 	public static void main(String[] args) {
 		try {
@@ -34,16 +35,16 @@ public class NewsMain {
 				if(args.length == 2 && args[1].equals("-redis")) {
 					writeRedis();
 				}
-				else {
-					write();
+				else if(args.length == 5 && args[1].equals("-u") && args[3].equals("-p")) {
+					write(args[2], args[4]);
 				}
 			}
 			else if(args[0].equals("-r")) {
 				if(args.length == 2 && args[1].equals("-redis")) {
 					readRedis();
 				}
-				else {
-					read();
+				else if(args.length == 5 && args[1].equals("-u") && args[3].equals("-p")) {
+					read(args[2], args[4]);
 				}
 			}
 			else {
@@ -55,12 +56,12 @@ public class NewsMain {
 		}
 	}
 	
-	private static void write() {
+	private static void write(String user, String password) {
 		getUrl();
 		parseJSON();
 		setTimeZone();
 		
-		MySQLAccess dao = new MySQLAccess();
+		MySQLAccess dao = new MySQLAccess(user, password);
 		dao.connect();
 		for(int i = 0; i < articles.size();i++) {
 			JSONObject article = (JSONObject) articles.get(i);
@@ -138,8 +139,8 @@ public class NewsMain {
 		
 	}
 
-	private static void read() {
-		MySQLAccess dao = new MySQLAccess();
+	private static void read(String user, String password) {
+		MySQLAccess dao = new MySQLAccess(user, password);
 		dao.connect();
 		ArrayList<Nouvelle> nouvelles = dao.getNouvelles();
 		for(Nouvelle nouvelle : nouvelles) {

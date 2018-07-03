@@ -16,8 +16,13 @@ public class MySQLAccess {
     private String CONNECT = "jdbc:mysql://localhost/feedback?";
     private String TIMEZONE_CORRECTIONS = "useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&";
     private String OTHER_CORRECTIONS = "useSSL=false&";
-    private String USER = "com.mysql.jdbc.Driver";
-    private String PASSWORD = "com.mysql.jdbc.Driver";
+    private String user;
+    private String password;
+    
+    public MySQLAccess(String user, String password) {
+    	this.user = user;
+    	this.password = password;
+    }
     
     public void connect() {
     	try {
@@ -29,7 +34,7 @@ public class MySQLAccess {
         try {
 			connect = DriverManager
 			        .getConnection("jdbc:mysql://localhost/news?" + TIMEZONE_CORRECTIONS + OTHER_CORRECTIONS 
-			                + "user=sqluser&password=sqluserpw");
+			                + "user="+ user + "&password=" + password);
 		} catch (SQLException e) {
 			System.out.println("Erreur connection");
 			e.printStackTrace();
