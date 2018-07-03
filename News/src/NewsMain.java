@@ -68,7 +68,7 @@ public class NewsMain {
 				dao.addNouvelle(
 						new Nouvelle(
 								String.valueOf(article.get("title")),
-								String.valueOf(article.get("descritption")),
+								String.valueOf(article.get("description")),
 								String.valueOf(article.get("url")),
 								dateToUnixTimestamp(String.valueOf(article.get("publishedAt")))));
 			} catch (java.text.ParseException e) {
@@ -80,7 +80,7 @@ public class NewsMain {
 	}
 	
 	private static void setTimeZone() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
